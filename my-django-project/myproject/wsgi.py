@@ -1,0 +1,20 @@
+my-django-project
+├── manage.py
+├── requirements.txt
+├── README.md
+└── myproject
+    ├── __init__.py
+    ├── settings.py
+    ├── urls.py
+    ├── wsgi.py
+    ├── asgi.py
+    └── apps
+        └── core
+            ├── __init__.py
+            ├── admin.py
+            ├── apps.py
+            ├── models.py
+            ├── views.py
+            ├── urls.py
+            └── migrations
+                └── __init__.py
