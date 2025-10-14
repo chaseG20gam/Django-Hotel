@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Hotel Admin{% endblock %}</title>
+</head>
+<body>
+  {% if user.is_authenticated %}
+    <p>connected as {{ user.get_full_name|default:user.username }} — <a href="{% url 'hotel:logout' %}">Log Out</a></p>
+  {% else %}
+    <p><a href="{% url 'hotel:login' %}">Log In</a></p>
+  {% endif %}
+  {% for message in messages %}
+    <p style="color: green;">{{ message }}</p>
+  {% endfor %}
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+</html>

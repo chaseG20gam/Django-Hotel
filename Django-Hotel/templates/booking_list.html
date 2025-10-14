@@ -1,0 +1,10 @@
+{% extends 'hotel/base.html' %}
+{% block content %}
+  <h1>Bookings</h1>
+  <p><a href="{% url 'hotel:reserva_crear' %}">Create Booking</a></p>
+  <ul>
+    {% for r in booking %}
+      <li><a href="{% url 'hotel:booking_detail' r.pk %}">Booking {{ r.pk }}</a> — {{ r.client }} — room {{ r.room.number }} — {{ r.check_in_date }} → {{ r.check_out_date }} — {{ r.available }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
