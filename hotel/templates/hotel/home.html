@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome to Far West Hotel</h1>
+<nav>
+    <ul>
+        <li><a href="{% url 'hotel:client_list' %}">Clients</a></li>
+        <li><a href="{% url 'hotel:room_list' %}">Rooms</a></li>
+        <li><a href="{% url 'hotel:booking_list' %}">Bookings</a></li>
+    </ul>
+</nav>
+{% endblock %}

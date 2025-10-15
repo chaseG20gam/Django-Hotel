@@ -43,4 +43,4 @@ class BookingForm(forms.ModelForm):
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ['name', 'surname', 'email', 'phone', 'direction']
+        fields = ['name', 'surname', 'email', 'phone', 'address']

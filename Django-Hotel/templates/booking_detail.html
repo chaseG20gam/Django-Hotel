@@ -1,9 +1,0 @@
-{% extends 'hotel/base.html' %}
-{% block content %}
-  <h1>Booking {{ booking.pk }}</h1>
-  <p>Client: {{ booking.client }}</p>
-  <p>Room: {{ booking.room }}</p>
-  <p>Dates: {{ booking.check_in_date }} → {{ booking.check_out_date }}</p>
-  <p>Services: {% for s in booking.services.all %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</p>
-  <p>Estimated total: {{ booking.total|floatformat:2 }}</p>
-{% endblock %}

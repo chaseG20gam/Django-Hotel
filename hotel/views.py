@@ -10,21 +10,27 @@ from django.contrib.auth import views as auth_views, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import datetime
+from django.views.generic import TemplateView, ListView
+from django.contrib.auth.views import LoginView as AuthLoginView
 
-class ClientListView(LoginRequiredMixin, generic.ListView):
+
+class HomeView(TemplateView):
+    template_name = 'hotel/home.html'
+
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = 'hotel/client_list.html'
-    context_object_name = 'client'
+    context_object_name = 'clients'
     paginate_by = 20
 
-class RoomListView(LoginRequiredMixin, generic.ListView):
+class RoomListView(LoginRequiredMixin, ListView):
     model = Room
-    template_name = 'hotel/rooms_list.html'
+    template_name = 'hotel/room_list.html'
     context_object_name = 'rooms'
     paginate_by = 20
 
     def get_queryset(self):
-        qs = super().get_queryset().filter(active=True)
+        qs = super().get_queryset().filter(available=True)
         # filter by availability dates if provided
         check_in = self.request.GET.get('check_in')
         check_out = self.request.GET.get('check_out')
@@ -42,9 +48,9 @@ class RoomListView(LoginRequiredMixin, generic.ListView):
                 pass
         return qs
 
-class BookingListView(LoginRequiredMixin, generic.ListView):
+class BookingListView(LoginRequiredMixin, ListView):
     model = Booking
-    template_name = 'hotel/bookings_list.html'
+    template_name = 'hotel/booking_list.html'
     context_object_name = 'bookings'
     paginate_by = 25
 
@@ -76,8 +82,9 @@ def booking_by_client(request, client_id=None):
     return render(request, 'hotel/bookings_by_client.html', {'client': client, 'bookings': bookings})
 
 # autentication views
-class LoginView(auth_views.LoginView):
+class LoginView(AuthLoginView):
     template_name = 'hotel/login.html'
+    next_page = 'hotel:home'
 
 def logout_view(request):
     logout(request)

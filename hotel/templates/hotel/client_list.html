@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Clients</h1>
+<ul>
+    {% for client in clients %}
+        <li>{{ client.name }} {{ client.surname }}</li>
+    {% empty %}
+        <li>No clients found.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'hotel:home' %}">Back to Home</a>
+{% endblock %}

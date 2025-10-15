@@ -12,8 +12,8 @@ class ClientAdmin(admin.ModelAdmin):
 
 
 @admin.register(Employee)
-class PerfilEmployeeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'position', 'phone', 'hire_date')
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ['user', 'position', 'salary']  # Remove hire_date
     search_fields = ('user__username', 'user__first_name', 'user__last_name', 'position')
 
 

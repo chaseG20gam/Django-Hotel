@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Rooms</h1>
+<ul>
+    {% for room in rooms %}
+        <li>Room {{ room.number }} - {{ room.type }}</li>
+    {% empty %}
+        <li>No rooms found.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'hotel:home' %}">Back to Home</a>
+{% endblock %}

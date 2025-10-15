@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Far West Hotel{% endblock %}</title>
+</head>
+<body>
+    <header>
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.get_full_name|default:user.username }} | 
+               <a href="{% url 'hotel:logout' %}">Log Out</a></p>
+        {% else %}
+            <p><a href="{% url 'hotel:login' %}">Log In</a></p>
+        {% endif %}
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Far West Hotel</p>
+    </footer>
+</body>
+</html>
