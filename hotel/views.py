@@ -3,11 +3,12 @@ from django.views import generic
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Client, Room, Booking
-from .forms import BookingForm, ClientForm
+from .forms import BookingForm, ClientForm, RegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import views as auth_views, logout
+from django.contrib.auth import views as auth_views, logout, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.utils import timezone
 from datetime import datetime
 from django.views.generic import TemplateView, ListView
@@ -75,11 +76,31 @@ class BookingCreateView(LoginRequiredMixin, generic.CreateView):
             return self.form_invalid(form)
 
 # booking by client view
+# logins required
 @login_required
 def booking_by_client(request, client_id=None):
     client = get_object_or_404(Client, pk=client_id)
     bookings = client.bookings.all()
     return render(request, 'hotel/bookings_by_client.html', {'client': client, 'bookings': bookings})
+
+def profile_view(request):
+    return render(request, 'hotel/profile.html')
+
+def profile_edit_view(request):
+    if request.method == 'POST':
+        uform = UserUpdateForm(request.POST, instance=request.user)
+        pform = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if uform.is_valid() and pform.is_valid():
+            uform.save()
+            pform.save()
+            messages.success(request, 'Profile updated')
+            return redirect('accounts:profile')
+        else:
+            uform = UserUpdateForm(instance=request.user)
+            pform = ProfileUpdateForm(instance=request.user.profile)
+            context = {'uform': uform, 'pform': pform}
+            return render(request, 'hotel/profile_edit.html', context)
+
 
 # autentication views
 class LoginView(AuthLoginView):
@@ -89,4 +110,32 @@ class LoginView(AuthLoginView):
 def logout_view(request):
     logout(request)
     messages.info(request, "logged out successfully.")
+    return redirect('hotel:login')
+
+def register_view(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, 'account created succesfully. now log in')
+            return redirect('hotel:login')
+        else:
+            form = RegisterForm()
+            return render(request, 'hotel/register.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Welome {user.username}")
+            return redirect('hotel:profile')
+        else:
+            form = AuthenticationForm()
+        return render(request, 'hotel/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, "logged out succesfully")
     return redirect('hotel:login')

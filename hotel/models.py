@@ -4,6 +4,14 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from decimal import Decimal
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s profile" 
+
 class Client(models.Model):
     name = models.CharField(max_length=150)
     surname = models.CharField(max_length=150)

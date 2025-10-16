@@ -4,7 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 ALLOWED_HOSTS = ['*']
-SECRET_KEY = 'admin'
+SECRET_KEY = 'admin' # change this in production
 ROOT_URLCONF = 'project.urls' 
 
 STATIC_URL = '/static/'
@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hotel',
+    'hotel', # our app
 ]
 
 LOGIN_URL = 'hotel:login'
@@ -29,10 +29,10 @@ LOGOUT_REDIRECT_URL = 'hotel:home'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', 
+    'django.middleware.common.CommonMiddleware', 
+    'django.middleware.csrf.CsrfViewMiddleware', # protects against CSRF attacks
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # allows to use authentication system
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -53,6 +53,8 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'project.wsgi.application'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATABASES = {
@@ -61,3 +63,17 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+LANGUAGE_CODE = 'es-en'
+TIME_ZONE = 'Europe/Madrid'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = '/static/'
+
+LOGIN_URL = 'hotel:login'
+LOGIN_REDIRECT_URL = 'hotel:home'
+LOGOUT_REDIRECT_URL = 'hotel:login'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

@@ -16,4 +16,7 @@ urlpatterns = [
     path('bookings/by-client/<int:client_id>/', views.booking_by_client, name='bookings_by_client'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='hotel:home'), name='logout'),
+    path('register/', views.register_view, name='register'),
+    path('profile/', views.profile_view, name='profile'),
+    path('profile/edit/', views.profile_edit_view, name='profile_edit'),
 ]
