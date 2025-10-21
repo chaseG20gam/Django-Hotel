@@ -3,8 +3,10 @@
     <h2>edit profile</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ uform.as_p }}
-        {{ pform.as_p }}
-        <button type="submit">Update Profile</button>
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <button type="submit">save changes</button>
     </form>
+    <a href="{% url 'hotel:profile' %}">back to profile</a>
+<a href="{% url 'hotel:home' %}">Back to Home</a>
 {% endblock %}

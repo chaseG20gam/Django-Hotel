@@ -1,14 +1,30 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% block content %}
-  <h2>User Profile</h2>
-  <p>Username: {{ user.username }}</p>
-  <p>Email: {{ user.email }}</p>
-  <p>First Name: {{ user.first_name }}</p>
-  <p>Last Name: {{ user.last_name }}</p>
-  {% if user.profile.profile_picture %}
-    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" width="150">
-  {% else %}
-    <p>No profile picture uploaded.</p>
-  {% endif %}
-  <a href="{% url 'accounts:profile_edit' %}">Edit Profile</a>
+<div class="profile-container">
+    <div class="profile-header">
+        {% if user.profile.profile_picture %}
+            <img src="{{ user.profile.profile_picture.url }}" class="profile-avatar">
+        {% else %}
+            <a>No profile picture</a>
+        {% endif %}
+        
+        <h2>{{ user.get_full_name|default:user.username }}</h2>
+        
+        {% if user.bio %}
+            <div class="profile-bio">
+                <p>{{ user.bio }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="profile-details">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Member since:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'hotel:profile_edit' %}" class="btn btn-primary">Edit Profile</a>
+    </div>
+
 {% endblock %}

@@ -83,23 +83,34 @@ def booking_by_client(request, client_id=None):
     bookings = client.bookings.all()
     return render(request, 'hotel/bookings_by_client.html', {'client': client, 'bookings': bookings})
 
+@login_required
 def profile_view(request):
-    return render(request, 'hotel/profile.html')
+    context = {
+        'user': request.user,
+        'profile': request.user.profile,
+        'bookings': Booking.objects.filter(client=request.user.client) if hasattr(request.user, 'client') else []
+    }
+    return render(request, 'hotel/profile.html', context)
 
+@login_required
 def profile_edit_view(request):
     if request.method == 'POST':
-        uform = UserUpdateForm(request.POST, instance=request.user)
-        pform = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-        if uform.is_valid() and pform.is_valid():
-            uform.save()
-            pform.save()
-            messages.success(request, 'Profile updated')
-            return redirect('accounts:profile')
-        else:
-            uform = UserUpdateForm(instance=request.user)
-            pform = ProfileUpdateForm(instance=request.user.profile)
-            context = {'uform': uform, 'pform': pform}
-            return render(request, 'hotel/profile_edit.html', context)
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('hotel:profile')
+    else:
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
+    
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'hotel/profile_edit.html', context)
 
 
 # autentication views
